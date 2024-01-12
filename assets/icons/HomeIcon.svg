@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_42" data-name="Rectangle 42" width="48" height="48" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Groupe_27" data-name="Groupe 27" transform="translate(0 -0.325)">
+    <g id="Groupe_26" data-name="Groupe 26" transform="translate(0 0.325)" clip-path="url(#clip-path)">
+      <path id="Tracé_43" data-name="Tracé 43" d="M116.888,155.6s-4.806-12.063,1.979-19.6" transform="translate(-93.517 -110.645)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_44" data-name="Tracé 44" d="M90.76,109.864s-8.293-2.262-4.513-10.555c2.8-6.136,10.627-8.293,11.5-11.309,1.39,1.508,8.093,20.356-3.97,21.864" transform="translate(-69.19 -71.692)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_45" data-name="Tracé 45" d="M41,62.812H55.323a.754.754,0,0,0,.754-.754V40.948h4.2a.754.754,0,0,0,.533-1.287L41.856,21.88a.754.754,0,0,0-1.067,0L21.943,39.661a.754.754,0,0,0,.533,1.287h4.2v21.11a.754.754,0,0,0,.754.754H36.8" transform="translate(-17.627 -17.855)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_46" data-name="Tracé 46" d="M168,27.016V24h5.277V35.309" transform="translate(-136.336 -19.755)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

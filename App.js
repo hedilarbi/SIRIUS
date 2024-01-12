@@ -1,20 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from "expo-font";
+import { Provider } from "react-redux";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { store } from "./src/redux/store";
+import RootNavigation from "./src/navigation/RootNavigation";
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    "Quicksand-Bold": require("./assets/fonts/Quicksand/Quicksand-Bold.ttf"),
+    "Quicksand-Light": require("./assets/fonts/Quicksand/Quicksand-Light.ttf"),
+    "Quicksand-Medium": require("./assets/fonts/Quicksand/Quicksand-Medium.ttf"),
+    "Quicksand-Regular": require("./assets/fonts/Quicksand/Quicksand-Regular.ttf"),
+    "Quicksand-SemiBold": require("./assets/fonts/Quicksand/Quicksand-SemiBold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <RootNavigation />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
