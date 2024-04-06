@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
 
-    paddingVertical: 12,
     backgroundColor: "white",
   },
   btn_active: {

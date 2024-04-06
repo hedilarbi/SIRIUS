@@ -1,4 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, AntDesign } from "@expo/vector-icons";
@@ -8,7 +14,7 @@ import { Colors, FontSize, Fonts } from "../constants";
 import { addDevice, getPlantsData } from "../services/plantServices";
 import { useSelector } from "react-redux";
 import { selectUserToken } from "../redux/slices/userSlice";
-import PanelIcon from "../../assets/icons/PanelIcon.svg";
+import PanelIconBlue from "../../assets/icons/PanelIconBlue.svg";
 import Header from "../components/Header";
 import LoadingScreen from "../components/LoadingScreen";
 import ErrorScreen from "../components/ErrorScreen";
@@ -26,11 +32,13 @@ const DeviceScreen = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [addDeviceLoading, setAddDeviceLoading] = useState(false);
   const token = useSelector(selectUserToken);
+
   const fetchData = async () => {
     getPlantsData(token)
       .then((response) => {
         if (response.status === 200) {
           if (response.data.code === 200) {
+            console.log(response.data.rows);
             setKits(response.data.rows);
           } else {
             setShowErrorScreen(true);
@@ -50,18 +58,14 @@ const DeviceScreen = () => {
     fetchData();
   }, [refresh]);
 
-  const addDeviceToKit = async (guid) => {
-    console.log("a");
+  const addDeviceToKit = async (guid, powerStationId) => {
     setAddDeviceLoading(true);
-    addDevice(token, guid, serialNumber)
+
+    addDevice(token, guid, serialNumber, powerStationId)
       .then((response) => {
-        console.log(response.data);
         if (response.status === 200) {
-          if (response.data.code === 200) {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "HomeNav" }],
-            });
+          if (!response.data.code) {
+            navigation.navigate("HomeNav");
           } else {
             setShowErrorModal(true);
           }
@@ -102,21 +106,24 @@ const DeviceScreen = () => {
         <Header navigation={navigation} />
       </View>
       <View style={styles.device_container}>
-        <View style={{ marginTop: 8 }}>
-          <PanelIcon width={50} height={50} />
+        <View style={{}}>
+          <PanelIconBlue width={50} height={50} />
         </View>
         <View style={styles.box}>
           <Text style={styles.title}>Votre appareil</Text>
           <Text style={styles.name}>N° {serialNumber}</Text>
         </View>
       </View>
-      <View
+      <ScrollView
         style={{
           flex: 1,
           backgroundColor: Colors.BOXES_BG,
           borderTopEndRadius: 24,
           borderTopStartRadius: 24,
           paddingHorizontal: 24,
+        }}
+        contentContainerStyle={{
+          paddingBottom: 15,
         }}
       >
         <Text style={styles.instruction_txt}>
@@ -126,7 +133,9 @@ const DeviceScreen = () => {
           {kits.map((kit, index) => {
             return (
               <TouchableOpacity
-                onPress={() => addDeviceToKit(kit.powerStationGuid)}
+                onPress={() =>
+                  addDeviceToKit(kit.powerStationGuid, kit.powerStationId)
+                }
                 style={styles.address_btn}
                 key={index}
               >
@@ -145,7 +154,7 @@ const DeviceScreen = () => {
           <Text style={styles.btn_text}>Créer un nouveau kit</Text>
           <Feather name="plus" size={20} color="white" />
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -155,7 +164,7 @@ export default DeviceScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 12,
+    paddingTop: 12,
     backgroundColor: "white",
   },
   device_container: {

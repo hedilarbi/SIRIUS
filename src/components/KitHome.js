@@ -6,22 +6,33 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors, FontSize, Fonts } from "../constants";
 import UsageComparisonCard from "./UsageComparisonCard";
 import LinearGradientWrapper from "./LinearGradientWrapper";
+import EnergySaveIcon from "../../assets/icons/EnergySaveIcon.svg";
 
-const KitHome = ({ kits }) => {
+const KitHome = ({
+  kits,
+  totalEnergy,
+  totalCO2,
+  averageEnergyCurrentDay,
+  averageEnergyCurrentMonth,
+  averageEnergyCurrentYear,
+  averageEnergyDayMinus1,
+  averageEnergyMonthMinus1,
+  averageEnergyYearMinus1,
+}) => {
   const navigation = useNavigation();
-  console.log(kits);
+
   return (
-    <View style={{ flex: 1, width: "100%" }}>
+    <View style={{ flex: 1, width: "100%", justifyContent: "space-between" }}>
       <View style={{ width: "100%", marginTop: 24 }}>
         <View style={styles.add_title_box}>
           <Text style={styles.add_title_text}>
             Total de ma production en cours
           </Text>
           <Text style={[styles.add_title_text, { fontSize: FontSize.XL }]}>
-            248.60
+            {totalEnergy}
           </Text>
           <Text style={[styles.add_title_text, { fontSize: FontSize.XL }]}>
-            Watts
+            KWH
           </Text>
         </View>
       </View>
@@ -61,10 +72,11 @@ const KitHome = ({ kits }) => {
               style={{
                 fontFamily: Fonts.QUICKSAND_BOLD,
                 fontSize: FontSize.S,
+
                 color: Colors.PR,
               }}
             >
-              667.99G
+              {totalCO2} T
             </Text>
           </View>
         </View>
@@ -80,7 +92,7 @@ const KitHome = ({ kits }) => {
             paddingVertical: 8,
           }}
         >
-          <Ionicons name="earth-sharp" size={40} color={Colors.PR} />
+          <EnergySaveIcon width={40} height={40} />
           <View style={{ marginLeft: 12 }}>
             <Text
               style={{
@@ -89,7 +101,7 @@ const KitHome = ({ kits }) => {
                 color: Colors.PR,
               }}
             >
-              CO2
+              Economie
             </Text>
             <Text
               style={{
@@ -98,42 +110,56 @@ const KitHome = ({ kits }) => {
                 color: Colors.PR,
               }}
             >
-              667.99G
+              ?? €
             </Text>
           </View>
         </View>
       </View>
 
-      <UsageComparisonCard />
-      <UsageComparisonCard />
-      <UsageComparisonCard />
-      <LinearGradientWrapper style={{ marginTop: 24 }}>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-
-            paddingVertical: 12,
-            borderRadius: 36,
-          }}
-          onPress={() => navigation.navigate("MyProduction")}
-        >
-          <Ionicons name="stats-chart" size={24} color="white" />
-          <Text
+      <UsageComparisonCard
+        t={averageEnergyCurrentDay}
+        tMinusOne={averageEnergyDayMinus1}
+        mode="daily"
+      />
+      <UsageComparisonCard
+        t={averageEnergyCurrentMonth}
+        tMinusOne={averageEnergyMonthMinus1}
+        mode="monthly"
+      />
+      <UsageComparisonCard
+        t={averageEnergyCurrentYear}
+        tMinusOne={averageEnergyYearMinus1}
+        mode="yearly"
+      />
+      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+        <LinearGradientWrapper style={{ marginTop: 24 }}>
+          <TouchableOpacity
             style={{
-              marginLeft: 24,
-              fontFamily: Fonts.QUICKSAND_SEMI_BOLD,
-              fontSize: FontSize.M,
-              color: "white",
-              marginBottom: 4,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              borderRadius: 32,
             }}
+            onPress={() => navigation.navigate("MyProduction")}
           >
-            Détails de ma production
-          </Text>
-        </TouchableOpacity>
-      </LinearGradientWrapper>
+            <Ionicons name="stats-chart" size={24} color="white" />
+            <Text
+              style={{
+                marginLeft: 24,
+                fontFamily: Fonts.QUICKSAND_MEDIUM,
+                fontSize: FontSize.S,
+                color: "white",
+                marginBottom: 4,
+              }}
+            >
+              Détails de ma production
+            </Text>
+          </TouchableOpacity>
+        </LinearGradientWrapper>
+      </View>
     </View>
   );
 };

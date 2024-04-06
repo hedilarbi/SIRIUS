@@ -71,7 +71,7 @@ const getPlantHistory = async (
       `${BASE_URL}/${ROUTE}/getStationAggregationChartData`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          token,
           "Content-Type": "application/json",
         },
         params: {
@@ -144,21 +144,20 @@ const updatePlant = async (
   token,
   powerStationGuid,
   powerStationId,
-  gridConnectedType,
-  stationName,
-  buildDate,
-  installedCapacity,
-  installedCapacityBattery,
-  electricityGain,
-  totalCost,
-  locationLongitude,
-  locationLatitude,
-  location,
-  contact,
-  phone,
   ownerUserId,
   ownerEmail,
-  owner
+  owner,
+  timeZone,
+  deptCode,
+  deptId,
+  guests,
+  images,
+  location,
+  locationLatitude,
+  locationLongitude,
+  buildDateDashFormat,
+  totalCost,
+  installedCapacity
 ) => {
   try {
     let response = await axios.put(
@@ -166,31 +165,24 @@ const updatePlant = async (
       {
         powerStationGuid,
         powerStationId,
-        gridConnectedType,
-        stationName,
-        businessType: BUSINESS_TYPE,
-        stationType: STATION_TYPE,
-        buildDate,
-        installedCapacity,
-        installedCapacityBattery,
-        electricityGain,
-        totalCost,
-        currency: CURRENCY,
-        locationLongitude,
-        locationLatitude,
-        location,
-        contact,
-        phone,
-        timeZone: TIME_ZONE_ID,
-        deptId: DEPT_ID,
-        deptCode: DEPT_CODE,
         ownerUserId,
         ownerEmail,
         owner,
+        timeZone,
+        deptCode,
+        deptId,
+        guests,
+        images,
+        location,
+        locationLatitude,
+        locationLongitude,
+        buildDate: buildDateDashFormat,
+        totalCost,
+        installedCapacity,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          token,
           "Content-Type": "application/json",
         },
       }
@@ -204,13 +196,13 @@ const updatePlant = async (
   }
 };
 
-const deletePlant = async (token, powerStationGuid) => {
+const deletePlant = async (token, powerStationId) => {
   try {
     let response = await axios.delete(
-      `${BASE_URL}/${ROUTE}/${powerStationGuid}`,
+      `${BASE_URL}/${ROUTE}/${powerStationId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          token,
           "Content-Type": "application/json",
         },
       }
@@ -223,14 +215,22 @@ const deletePlant = async (token, powerStationGuid) => {
     };
   }
 };
-const addDevice = async (token, powerStationGuid, serialNumber) => {
+const addDevice = async (
+  token,
+  powerStationGuid,
+  serialNumber,
+  powerStationId
+) => {
   try {
     let response = await axios.post(
       `${BASE_URL}/${ROUTE}/addDevices`,
-      {
-        powerStationGuid,
-        serialNumber,
-      },
+      [
+        {
+          powerStationGuid: powerStationGuid,
+          serialNumber: serialNumber,
+          powerStationId: powerStationId,
+        },
+      ],
       {
         headers: {
           token,
@@ -250,13 +250,46 @@ const deleteDevice = async (token, deviceGuid) => {
   try {
     let response = await axios.post(`${BASE_URL}/tools/device`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        token,
         "Content-Type": "application/json",
       },
       params: {
         deviceGuid,
       },
     });
+    return response;
+  } catch (error) {
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+const plantHistoricalData = async (
+  token,
+  powerStationGuid,
+  timezone,
+  date,
+  series,
+  group
+) => {
+  try {
+    let response = await axios.get(
+      `${BASE_URL}/system/station/getStationAggregationChartData`,
+      {
+        headers: {
+          token,
+          "Content-Type": "application/json",
+        },
+        params: {
+          powerStationGuid,
+          timezone,
+          date,
+          series,
+          group,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return {
@@ -274,4 +307,5 @@ export {
   deletePlant,
   addDevice,
   deleteDevice,
+  plantHistoricalData,
 };

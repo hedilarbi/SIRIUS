@@ -4,16 +4,48 @@ import { Feather } from "@expo/vector-icons";
 
 import { Colors, FontSize, Fonts } from "../constants";
 import PanelIcon from "../../assets/icons/PanelIcon.svg";
-const DeviceCard = ({ name }) => {
+
+import { unbindDevice } from "../services/deviceServices";
+const DeviceCard = ({
+  serialNumber,
+  deviceGuid,
+  deviceId,
+  setDeleteIsLoading,
+  setShowErrorModal,
+  token,
+  setDevices,
+  devices,
+}) => {
+  const deleteDevice = async () => {
+    setDeleteIsLoading(true);
+    try {
+      const response = await unbindDevice(token, deviceGuid, deviceId);
+      if (response.status === 200) {
+        if (response.data.code === 200) {
+          const list = devices.filter((device) => device.deviceId != deviceId);
+          setDevices(list);
+        } else {
+          setShowErrorModal(true);
+        }
+      } else {
+        setShowErrorModal(true);
+      }
+    } catch (err) {
+      setShowErrorModal(true);
+    } finally {
+      setDeleteIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 8 }}>
+      <View>
         <PanelIcon width={50} height={50} />
       </View>
       <View style={styles.box}>
         <Text style={styles.title}>Votre appareil</Text>
-        <Text style={styles.name}>{name}</Text>
-        <TouchableOpacity style={styles.delete_btn}>
+        <Text style={styles.name}>{serialNumber}</Text>
+        <TouchableOpacity style={styles.delete_btn} onPress={deleteDevice}>
           <Feather name="trash" size={20} color="white" />
           <Text style={styles.delete_btn_txt}>Supprimer</Text>
         </TouchableOpacity>
@@ -29,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.PR,
     borderRadius: 24,
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
     flexDirection: "row",
 
     marginTop: 24,

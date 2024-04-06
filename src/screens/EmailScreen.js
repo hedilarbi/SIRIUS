@@ -1,4 +1,5 @@
 import {
+  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -25,7 +26,10 @@ const EmailScreen = () => {
       <TextInput style={styles.input} placeholder="Votre e-mail" />
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate("OTP", { parent: "resetPwd" })}
+        onPress={() => {
+          Keyboard.dismiss();
+          navigation.navigate("OTP", { parent: "resetPwd" });
+        }}
       >
         <Text style={styles.btn_text}>Vérifier mon email</Text>
         <AntDesign name="arrowright" size={24} color="white" />
@@ -53,7 +57,7 @@ export default EmailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 12,
     paddingVertical: 16,
     backgroundColor: "white",
     alignItems: "center",

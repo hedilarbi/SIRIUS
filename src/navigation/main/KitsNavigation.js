@@ -15,20 +15,6 @@ const KitsNavigation = () => {
           headerShown: false,
         }}
       />
-      <KitsStack.Screen
-        name="Kit"
-        component={KitScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <KitsStack.Screen
-        name="MyDevices"
-        component={MyDevicesScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
     </KitsStack.Navigator>
   );
 };

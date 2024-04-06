@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -20,6 +21,7 @@ import InfoIcon from "../../assets/icons/InfoIcon.svg";
 const OTPScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -29,17 +31,17 @@ const OTPScreen = () => {
     .map((_, i) => useRef(null));
 
   const handleInputChange = (text, index) => {
-    if (text.length === 1 && index < 5) {
-      // Move to the next input
+    inputs[index].current.value = text;
 
+    if (text.length === 1 && index < 5) {
       inputs[index + 1].current.focus();
     }
-
-    // Update the OTP state
     const newOtp = otp.substring(0, index) + text + otp.substring(index + 1);
     setOtp(newOtp);
   };
+
   const handleNavigation = () => {
+    Keyboard.dismiss();
     if (route.params.parent === "signup") {
       const { email, guid } = route.params;
       navigation.navigate("SetupAccount", { email, guid, otp });
@@ -48,17 +50,23 @@ const OTPScreen = () => {
       navigation.navigate("PasswordScreen", { guid, otp });
     }
   };
-  const handleKeyPress = ({ nativeEvent }) => {
-    if (nativeEvent.key === "Backspace" && otp.length === 0) {
-      const lastIndex = inputs.length - 1;
-      if (lastIndex >= 0) {
-        // Move cursor to the last input
-        inputs[lastIndex].current.focus();
+
+  const handleKeyPress = (key, index) => {
+    if (key === "Backspace") {
+      if (index > 0 && inputs[index].current.value === "") {
+        inputs[index - 1].current.focus();
       }
     }
+    if (Number(key) && inputs[index].current?.value?.length > 0 && index < 5) {
+      inputs[index + 1].current.focus();
+      inputs[index + 1].current.value = key;
+      const newOtp = otp.substring(0, index) + key + otp.substring(index + 1);
+      setOtp(newOtp);
+    }
   };
+
   return (
-    <SafeAreaView style={styles.container} onKeyPress={handleKeyPress}>
+    <SafeAreaView style={styles.container}>
       {isLoading && <Spinner />}
       <ErrorModal
         visiblity={showErrorModal}
@@ -83,14 +91,10 @@ const OTPScreen = () => {
               maxLength={1}
               onChangeText={(text) => handleInputChange(text, index)}
               ref={input}
-              placeholder="0"
               value={otp[index]}
-              onKeyPress={({ nativeEvent }) => {
-                if (nativeEvent.key === "Backspace" && index > 0) {
-                  // Move cursor to the previous input
-                  inputs[index - 1].current.focus();
-                }
-              }}
+              onKeyPress={({ nativeEvent }) =>
+                handleKeyPress(nativeEvent.key, index)
+              }
             />
           ))}
         </View>
@@ -174,7 +178,7 @@ const styles = StyleSheet.create({
   },
   btn_text: {
     fontFamily: Fonts.QUICKSAND_MEDIUM,
-    fontSize: FontSize.M,
+    fontSize: FontSize.S,
     color: "white",
     marginRight: 24,
     marginTop: -4,

@@ -33,7 +33,6 @@ const SignUpScreen = () => {
       setIsLoading(true);
       sendVerificationCode(email)
         .then((response) => {
-          console.log(response.data);
           if (response.status === 200) {
             if (response.data?.code === 200) {
               const { guid } = response.data.data;
@@ -170,7 +169,7 @@ const styles = StyleSheet.create({
   },
   btn_text: {
     fontFamily: Fonts.QUICKSAND_MEDIUM,
-    fontSize: FontSize.M,
+    fontSize: FontSize.S,
     color: "white",
     marginRight: 24,
     marginTop: -4,

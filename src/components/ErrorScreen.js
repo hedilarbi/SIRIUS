@@ -35,37 +35,37 @@ const ErrorScreen = ({ setRefresh }) => {
       >
         Une erreur s'est produite.
       </Text>
-      <LinearGradientWrapper>
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            paddingHorizontal: 26,
-            paddingVertical: 10,
-            borderRadius: 16,
-            alignItems: "center",
-            justifyContent: "center",
-
-            marginTop: 20,
-          }}
-          onPress={() => setRefresh((prev) => prev + 1)}
-        >
-          <Ionicons name="refresh" size={28} color="white" />
-
-          <Text
+      <View style={{ marginTop: 12 }}>
+        <LinearGradientWrapper>
+          <TouchableOpacity
             style={{
-              fontFamily: Fonts.QUICKSAND_BOLD,
-              fontSize: FontSize.S,
-              color: "white",
-              marginBottom: 2,
-              textAlign: "center",
-              color: "white",
-              marginLeft: 8,
+              flexDirection: "row",
+              paddingHorizontal: 26,
+              paddingVertical: 10,
+              borderRadius: 16,
+              alignItems: "center",
+              justifyContent: "center",
             }}
+            onPress={() => setRefresh((prev) => prev + 1)}
           >
-            Rafraichir
-          </Text>
-        </TouchableOpacity>
-      </LinearGradientWrapper>
+            <Ionicons name="refresh" size={28} color="white" />
+
+            <Text
+              style={{
+                fontFamily: Fonts.QUICKSAND_BOLD,
+                fontSize: FontSize.S,
+                color: "white",
+                marginBottom: 2,
+                textAlign: "center",
+                color: "white",
+                marginLeft: 8,
+              }}
+            >
+              Rafraichir
+            </Text>
+          </TouchableOpacity>
+        </LinearGradientWrapper>
+      </View>
     </SafeAreaView>
   );
 };

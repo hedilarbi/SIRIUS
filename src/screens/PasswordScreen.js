@@ -1,6 +1,7 @@
 import {
   Animated,
   Image,
+  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -41,28 +42,37 @@ const PasswordScreen = ({}) => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const deleteAccount = async () => {
+    Keyboard.dismiss();
     setIsloading(true);
-    deleteUserAccount(token, otp, guid, password, email)
-      .then(async (response) => {
-        if (response.status === 200) {
-          if (response.data.code === 200) {
-            await deleteItemAsync(token);
-            dispatch(clearUser());
-            dispatch(clearUserToken());
-          } else {
-            setShowErrorModal(true);
-          }
+
+    try {
+      const response = await deleteUserAccount(
+        token,
+        otp,
+        guid,
+        password,
+        email
+      );
+
+      if (response.status === 200) {
+        if (!response.data.code) {
+          await deleteItemAsync(token);
+          dispatch(clearUser());
+          dispatch(clearUserToken());
         } else {
           setShowErrorModal(true);
         }
-      })
-      .catch((err) => {
+      } else {
         setShowErrorModal(true);
-      })
-      .finally(() => {
-        setIsloading(false);
-      });
+      }
+    } catch (err) {
+      console.error(err);
+      setShowErrorModal(true);
+    } finally {
+      setIsloading(false);
+    }
   };
+
   useEffect(() => {
     if (showErrorModal) {
       const timer = setTimeout(() => {

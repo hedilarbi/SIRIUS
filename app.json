@@ -1,25 +1,43 @@
 {
   "expo": {
-    "name": "SIRIUS",
-    "slug": "SIRIUS",
+    "name": "Syrma",
+    "slug": "Syrma",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC2t8GvZFa6Ld6fbKM6_m2n3M0JoOmI03w"
+        }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "com.hedilarbi912.Syrma"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,6 +55,11 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ab31fb26-f394-4088-9b29-e2ea6ec8f6d6"
+      }
+    }
   }
 }

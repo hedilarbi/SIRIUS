@@ -3,7 +3,9 @@ import { Provider } from "react-redux";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { store } from "./src/redux/store";
 import RootNavigation from "./src/navigation/RootNavigation";
-
+import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
+SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Quicksand-Bold": require("./assets/fonts/Quicksand/Quicksand-Bold.ttf"),
@@ -20,6 +22,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
+        <StatusBar style="dark" />
         <RootNavigation />
       </SafeAreaProvider>
     </Provider>

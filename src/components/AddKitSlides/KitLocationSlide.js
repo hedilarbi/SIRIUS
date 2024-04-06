@@ -11,8 +11,8 @@ const KitLocationSlide = ({ width, slideAnimValue, handlePrevious }) => {
       style={{
         alignItems: "center",
         width,
-        paddingHorizontal: 24,
-        paddingVertical: 24,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
         transform: [{ translateX: slideAnimValue }],
         flex: 1,
       }}

@@ -190,8 +190,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   btn_text: {
-    fontFamily: Fonts.QUICKSAND_SEMI_BOLD,
-    fontSize: FontSize.M,
+    fontFamily: Fonts.QUICKSAND_MEDIUM,
+    fontSize: FontSize.S,
     color: "white",
     marginRight: 12,
     marginTop: -4,

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="39.137" height="42" viewBox="0 0 39.137 42">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_51" data-name="Rectangle 51" width="39.137" height="42" fill="none" stroke="#3099cc" stroke-width="2"/>
+    </clipPath>
+  </defs>
+  <g id="Groupe_45" data-name="Groupe 45" transform="translate(-2 0.045)">
+    <g id="Groupe_44" data-name="Groupe 44" transform="translate(2 -0.045)" clip-path="url(#clip-path)">
+      <path id="Tracé_70" data-name="Tracé 70" d="M129.986,156c-8,4.667-12,11.333-12,15.333" transform="translate(-98.322 -130)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <line id="Ligne_63" data-name="Ligne 63" y2="18" transform="translate(19.664 23.333)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_71" data-name="Tracé 71" d="M67.32,59.333V54.667H65.986V52H83.32v2.667H81.986v4.667" transform="translate(-54.989 -43.333)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <line id="Ligne_64" data-name="Ligne 64" x1="8" transform="translate(18.998 11.333)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <line id="Ligne_65" data-name="Ligne 65" x2="2" transform="translate(12.331 11.333)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_72" data-name="Tracé 72" d="M85.986,12V5.333a1.333,1.333,0,0,1,2.667,0V12" transform="translate(-71.655 -3.333)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_73" data-name="Tracé 73" d="M140.653,12V5.333a1.333,1.333,0,0,0-2.667,0V12" transform="translate(-114.988 -3.333)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_74" data-name="Tracé 74" d="M133.837,127.333s-.576-5.161,3.333-7.333c6-3.333,10-1.333,12.667-4,0,3.333,2.667,18-15.333,14.667" transform="translate(-111.506 -96.667)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_75" data-name="Tracé 75" d="M45.986,132c8,4.667,12,11.333,12,15.333" transform="translate(-38.322 -110)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_76" data-name="Tracé 76" d="M73.986,96a7.35,7.35,0,0,0,.135,1.384" transform="translate(-61.655 -80)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_77" data-name="Tracé 77" d="M110.537,96a7.328,7.328,0,0,1-10.29,6.708" transform="translate(-83.539 -80)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_78" data-name="Tracé 78" d="M74.794,104.3a7.339,7.339,0,0,0,4.242,5.324" transform="translate(-62.328 -86.919)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      <path id="Tracé_79" data-name="Tracé 79" d="M15.8,84.051C10.46,81.5,6.816,82.485,4.331,80c-.667,4.667-2,20.667,15.333,16.667" transform="translate(-3.333 -66.667)" fill="none" stroke="#3099cc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </g>
+  </g>
+</svg>

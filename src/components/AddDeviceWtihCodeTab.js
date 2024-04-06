@@ -1,4 +1,5 @@
 import {
+  Keyboard,
   StyleSheet,
   Text,
   TextInput,
@@ -16,20 +17,23 @@ const AddDeviceWtihCodeTab = ({
   serialNumber,
   setSerialNumber,
 }) => {
+  const handleSubmit = () => {
+    Keyboard.dismiss();
+    navigation.navigate("Device", { serialNumber });
+  };
   return (
-    <View style={{ flex: 1, alignItems: "center", paddingHorizontal: 24 }}>
+    <View style={{ flex: 1, alignItems: "center", paddingHorizontal: 12 }}>
       <Text style={styles.title}>Entrez le code manuellement</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Numéro de série"
-        secureTextEntry={true}
         onChangeText={(text) => setSerialNumber(text)}
       />
       <LinearGradientWrapper style={{ marginTop: 32 }}>
         <TouchableOpacity
           style={serialNumber.length > 0 ? styles.btn : styles.btn_inactive}
-          onPress={() => navigation.navigate("Device", { serialNumber })}
+          onPress={handleSubmit}
           disabled={serialNumber.length > 0 ? false : true}
         >
           <Text style={styles.btn_text}>Continuer</Text>
@@ -97,8 +101,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   btn_text: {
-    fontFamily: Fonts.QUICKSAND_SEMI_BOLD,
-    fontSize: FontSize.M,
+    fontFamily: Fonts.QUICKSAND_MEDIUM,
+    fontSize: FontSize.S,
     color: "white",
     marginRight: 12,
     marginTop: -4,

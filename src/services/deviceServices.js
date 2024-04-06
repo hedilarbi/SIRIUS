@@ -61,4 +61,26 @@ const getDevice = async (token, deviceSn) => {
   }
 };
 
-export { getDevices, getDevice };
+const unbindDevice = async (token, deviceGuid, deviceId) => {
+  try {
+    let response = await axios.delete(
+      `${BASE_URL}/tools/device/${deviceId}`,
+
+      {
+        headers: {
+          token,
+          "Content-Type": "application/json",
+        },
+        data: deviceGuid,
+      }
+    );
+    return response;
+  } catch (error) {
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+export { getDevices, getDevice, unbindDevice };

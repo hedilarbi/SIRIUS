@@ -185,7 +185,7 @@ const resetUserPassword = async (token, oldPassword, newPassword) => {
 
 const deleteUserAccount = async (token, captcha, guid, password, email) => {
   try {
-    let response = await axios.put(
+    let response = await axios.post(
       `${BASE_URL}/organization/unregisterCurrentUser`,
       { guid, email, password, captcha },
       {

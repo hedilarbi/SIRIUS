@@ -18,6 +18,9 @@ import AddDeviceScreen from "../screens/AddDeviceScreen";
 import ResetPasswordNavigation from "./auth/ResetPasswordNavigation";
 import OTPScreen from "../screens/OTPScreen";
 import PasswordScreen from "../screens/PasswordScreen";
+import KitScreen from "../screens/KitScreen";
+import MyDevicesScreen from "../screens/MyDevicesScreen";
+import * as SplashScreen from "expo-splash-screen";
 
 const RootNavigation = () => {
   const RootStack = createNativeStackNavigator();
@@ -25,37 +28,38 @@ const RootNavigation = () => {
   const userToken = useSelector(selectUserToken);
   const [isLoading, setIsLoading] = useState(true);
   const initializeApp = async () => {
-    const token = await getItemAsync("token");
+    try {
+      const token = await getItemAsync("token");
 
-    if (token) {
-      getUser(token)
-        .then(async (response) => {
-          if (response.status === 200) {
-            if (response.data.code === 200) {
-              dispatch(setUser(response.data.user));
-              dispatch(setUserToken(token));
-              setIsLoading(false);
-            } else {
-              await deleteItemAsync("token");
-              setIsLoading(false);
-            }
+      if (token) {
+        const response = await getUser(token);
+
+        if (response.status === 200) {
+          if (response.data.code === 200) {
+            dispatch(setUser(response.data.user));
+            dispatch(setUserToken(token));
           } else {
-            console.log("error");
+            await deleteItemAsync("token");
           }
-        })
-        .catch((err) => {
-          console.log("err");
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
+        } else {
+          await deleteItemAsync("token");
+        }
+        await SplashScreen.hideAsync();
+        setIsLoading(false);
+      } else {
+        await SplashScreen.hideAsync();
+        setIsLoading(false);
+      }
+    } catch (err) {
       setIsLoading(false);
+      await SplashScreen.hideAsync();
     }
   };
+
   useEffect(() => {
     initializeApp();
   }, [userToken]);
+
   if (isLoading) {
     return null;
   }
@@ -116,6 +120,20 @@ const RootNavigation = () => {
             <RootStack.Screen
               name="PasswordScreen"
               component={PasswordScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <RootStack.Screen
+              name="Kit"
+              component={KitScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <RootStack.Screen
+              name="MyDevices"
+              component={MyDevicesScreen}
               options={{
                 headerShown: false,
               }}

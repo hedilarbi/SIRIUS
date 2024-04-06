@@ -49,51 +49,55 @@ const SetupAccountScreen = () => {
   };
 
   const createAccount = async () => {
-    if (password != verifyPassword) {
+    if (password !== verifyPassword) {
       setError("Les mots de passe ne sont pas identiques");
     } else {
-      setIsLoading(true);
-      registerUser(
-        username,
-        "0000000",
-        email,
-        username,
-        otp,
-        guid,
-        password
-      ).then(async (response) => {
-        if (response.status === 200) {
-          getUserToken(username, password).then(async (resp) => {
-            if (resp.status === 200) {
-              console.log(resp.data);
-              if (resp.data.code === 200) {
-                dispatch(
-                  setUser({
-                    username,
-                    phonenumber: "1333633343",
-                    email,
-                    password,
-                  })
-                );
-                dispatch(setUserToken(resp.data.data.token));
-                await setItemAsync("token", token);
-                setIsLoading(false);
-              } else {
-                setIsLoading(false);
-                setError(resp.data.msg);
-              }
+      try {
+        setIsLoading(true);
+
+        const registerResponse = await registerUser(
+          username,
+          "0000000",
+          email,
+          username,
+          otp,
+          guid,
+          password
+        );
+
+        if (registerResponse.status === 200) {
+          const loginResponse = await getUserToken(username, password);
+
+          if (loginResponse.status === 200) {
+            if (loginResponse.data.code === 200) {
+              dispatch(
+                setUser({
+                  username,
+                  phonenumber: "1333633343",
+                  email,
+                  password,
+                })
+              );
+              dispatch(setUserToken(loginResponse.data.data.token));
+              await setItemAsync("token", loginResponse.data.data.token);
             } else {
-              setIsLoading(false);
-              setShowErroModal(true);
+              setError("Code incorrect. Veuillez verifier le code OTP");
             }
-          });
+          } else {
+            setShowErroModal(true);
+          }
         } else {
-          setIsLoading(false);
           setShowErroModal(true);
         }
-      });
+      } catch (error) {
+        console.error(error);
+        setShowErroModal(true);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       {isLoading && <Spinner />}

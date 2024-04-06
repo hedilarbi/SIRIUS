@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Keyboard,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,6 +31,7 @@ const SignInScreen = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const dispatch = useDispatch();
   const login = async () => {
+    Keyboard.dismiss();
     setIslading(true);
     getUserToken(username, password)
       .then(async (response) => {
@@ -146,9 +148,9 @@ const SignInScreen = () => {
             <Text style={styles.login_btn_text}>Connexion</Text>
           </TouchableOpacity>
         </LinearGradientWrapper>
-        <TouchableOpacity style={styles.register_btn}>
+        {/* <TouchableOpacity style={styles.register_btn}>
           <Text style={styles.register_btn_text}>Mot de passe oublié ?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );
@@ -192,9 +194,10 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   login_btn_text: {
-    fontFamily: Fonts.QUICKSAND_SEMI_BOLD,
-    fontSize: FontSize.M,
+    fontFamily: Fonts.QUICKSAND_MEDIUM,
+    fontSize: FontSize.S,
     color: "white",
+    marginBottom: 4,
   },
   register_btn: {
     alignItems: "center",
@@ -204,7 +207,7 @@ const styles = StyleSheet.create({
 
   register_btn_text: {
     fontFamily: Fonts.QUICKSAND_MEDIUM,
-    fontSize: FontSize.M,
+    fontSize: FontSize.S,
     textDecorationLine: "underline",
     color: Colors.PR,
   },

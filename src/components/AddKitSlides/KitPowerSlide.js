@@ -27,7 +27,7 @@ const KitPowerSlide = ({
       style={{
         alignItems: "center",
         width,
-        paddingHorizontal: 24,
+        paddingHorizontal: 12,
         paddingVertical: 12,
         transform: [{ translateX: slideAnimValue }],
       }}

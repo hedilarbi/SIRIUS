@@ -22,10 +22,19 @@ const OnBoardingPage3 = ({ item }) => {
       <Text style={styles.title}>{item.title}</Text>
       <Image
         source={item.image}
-        style={[styles.image, { width: 250, resizeMode: "contain" }]}
+        style={[
+          styles.image,
+          { width: 220, height: 220, resizeMode: "contain" },
+        ]}
       />
       <Text style={styles.description}>{item.description}</Text>
-      <View style={{ marginTop: 24 }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
         <View style={{ flexDirection: "row" }}>
           <LinearGradientWrapper>
             <TouchableOpacity
@@ -58,7 +67,6 @@ const styles = StyleSheet.create({
   },
   image: {
     justifyContent: "center",
-    marginTop: 16,
   },
   title: {
     fontFamily: Fonts.QUICKSAND_BOLD,
@@ -80,8 +88,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   login_btn_text: {
-    fontFamily: Fonts.QUICKSAND_SEMI_BOLD,
-    fontSize: FontSize.M,
+    fontFamily: Fonts.QUICKSAND_MEDIUM,
+    fontSize: FontSize.S,
     color: "white",
     marginBottom: 4,
   },
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
   },
   register_btn_text: {
     fontFamily: Fonts.QUICKSAND_MEDIUM,
-    fontSize: FontSize.M,
+    fontSize: FontSize.S,
     textDecorationLine: "underline",
     color: Colors.PR,
   },

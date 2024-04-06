@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginVertical: 16,
+    marginVertical: 8,
   },
   name: {
     fontFamily: Fonts.QUICKSAND_BOLD,

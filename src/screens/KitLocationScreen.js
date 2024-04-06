@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Keyboard,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,12 +20,14 @@ import { selectUserToken, selectUser } from "../redux/slices/userSlice";
 import {
   addDevice,
   createPlant,
+  deletePlant,
   getPlantsData,
 } from "../services/plantServices";
 import { GOOGLE_MAPS_API_KEY } from "@env";
 import Header from "../components/Header";
 import ErrorModal from "../components/modals/ErrorModal";
 import Spinner from "../components/Spinner";
+import axios from "axios";
 
 const LOGITUDE_DELTA = 0.0121;
 const LATITUDE_DELTA = 0.0122;
@@ -46,65 +49,71 @@ const KitLocationScreen = () => {
 
   const createPlantAndDevice = async () => {
     setIsLoading(true);
-    createPlant(
-      token,
-      name,
-      power,
-      power,
-      location.longitude.toString(),
-      location.latitude.toString(),
-      address,
-      user.userId.toString(),
-      user.email,
-      user.userName
-    )
-      .then(async (response) => {
-        if (response.status === 200) {
-          console.log("ok");
-          if (response.data.code === 200) {
-            console.log(response.data);
-            getPlantsData(token).then(async (rsp) => {
-              if (rsp.status === 200) {
-                if (rsp.data.code === 200) {
-                  const list = rsp.data.rows;
-                  const kit = list.map((item) => item.location === address);
-                  addDevice(token, kit.powerStationGuid, serialNumber).then(
-                    (r) => {
-                      if (r.status === 200) {
-                        if (r.data.code === 200) {
-                          navigation.reset({
-                            index: 0,
-                            routes: [{ name: "HomeNav" }],
-                          });
-                        } else {
-                          console.log("adding devvice", r.data);
-                        }
-                      } else {
-                        console.log("adding device Error", r.data);
-                      }
-                    }
-                  );
-                }
+
+    try {
+      const plantResponse = await createPlant(
+        token,
+        name,
+        power,
+        power,
+        location.longitude.toString(),
+        location.latitude.toString(),
+        address,
+        user.userId.toString(),
+        user.email,
+        user.userName
+      );
+
+      if (plantResponse.status === 200 && plantResponse.data.code === 200) {
+        const plantsDataResponse = await getPlantsData(token);
+
+        if (
+          plantsDataResponse.status === 200 &&
+          plantsDataResponse.data.code === 200
+        ) {
+          const list = plantsDataResponse.data.rows;
+          const kit = list.find((item) => item.location === address);
+
+          if (kit) {
+            const deviceResponse = await addDevice(
+              token,
+              kit.powerStationGuid,
+              serialNumber,
+              kit.powerStationId
+            );
+
+            if (deviceResponse.status === 200) {
+              if (deviceResponse.data.code === 500) {
+                setShowErrorModal(true);
+                const deleteKitResponse = await deletePlant(
+                  token,
+                  kit.powerStationId
+                );
               } else {
-                console.log("getting data error:", rsp.data);
+                navigation.navigate("Home");
               }
-            });
+            } else {
+              setShowErrorModal(true);
+            }
           } else {
-            console.log("adding plant: ", response.data);
+            setShowErrorModal(true);
           }
         } else {
-          console.log("adding plant error", response.data);
+          setShowErrorModal(true);
         }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      } else {
+        setShowErrorModal(true);
+      }
+    } catch (error) {
+      setShowErrorModal(true);
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePlaceSelect = async (data, details) => {
+    Keyboard.dismiss();
     try {
       const { description } = details;
       setMapLoading(true);
@@ -128,51 +137,20 @@ const KitLocationScreen = () => {
   };
 
   const handleMarkerPlace = async (e) => {
-    const { longitude, latitude } = e.nativeEvent.coordinate;
-    const reverseGeocodeAddress = await Location.reverseGeocodeAsync(
-      {
-        latitude: latitude,
-        longitude: longitude,
-      },
-      {
-        useGoogleMaps: true,
-      }
-    );
-    // Initialize variables for each part of the address
+    try {
+      const { longitude, latitude } = e.nativeEvent.coordinate;
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
+      );
+      const address = response.data.results[0].formatted_address;
 
-    //   const response =
-    //     await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json
-    // ?
-    // &location=${latitude}%2C=${longitude}
-    // &radius=200
-
-    // &key=${GOOGLE_MAPS_API_KEY}`);
-    console.log("from handle marker place");
-    let streetNumber = "";
-    let street = "";
-    let region = "";
-    let city = "";
-
-    // Check if reverseGeocodeAddress[1] exists and has streetNumber and street properties
-    if (reverseGeocodeAddress[1]) {
-      streetNumber = reverseGeocodeAddress[1].streetNumber || "";
-      street = reverseGeocodeAddress[1].street || "";
-      region = reverseGeocodeAddress[1].region || "";
-      city = reverseGeocodeAddress[1].city || "";
+      setAddress(address);
+      setLocation({ longitude, latitude });
+    } catch (err) {
+      console.log(err);
     }
-
-    const address =
-      streetNumber +
-      (streetNumber.length > 0 ? ", " : "") +
-      street +
-      (street.length > 0 ? ", " : "") +
-      region +
-      ", " +
-      city;
-
-    setAddress(address);
-    setLocation({ longitude, latitude });
   };
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -186,6 +164,12 @@ const KitLocationScreen = () => {
         maximumAge: 10000,
         timeout: 5000,
       });
+      const res = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${response.coords.latitude},${response.coords.longitude}&key=${GOOGLE_MAPS_API_KEY}`
+      );
+      const address = res.data.results[0].formatted_address;
+
+      setAddress(address);
 
       setInitialRegion({
         latitude: response.coords.latitude,
@@ -193,6 +177,7 @@ const KitLocationScreen = () => {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LOGITUDE_DELTA,
       });
+
       setLocation(response.coords);
       setMapLoading(false);
     })();
@@ -275,9 +260,10 @@ const KitLocationScreen = () => {
             style={{ flex: 1 }}
             initialRegion={initialRegion}
             provider={PROVIDER_GOOGLE}
-            // onPress={(e) => {
-            //   handleMarkerPlace(e);
-            // }}
+            loadingEnabled={true}
+            onPress={(e) => {
+              handleMarkerPlace(e);
+            }}
           >
             <Marker
               coordinate={{
@@ -286,6 +272,9 @@ const KitLocationScreen = () => {
               }}
               draggable
               tappable
+              onDragEnd={(e) => {
+                handleMarkerPlace(e);
+              }}
             />
           </MapView>
         )}

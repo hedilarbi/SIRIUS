@@ -31,12 +31,21 @@ const OnBoardingPage1 = ({ item, setCurrentIndex, flatListRef }) => {
       <Text style={styles.title}>{item.title}</Text>
       <Image
         source={item.image}
-        style={[styles.image, { width: 250, resizeMode: "contain" }]}
+        style={[
+          styles.image,
+          { width: 220, height: 220, resizeMode: "contain" },
+        ]}
       />
 
       <Text style={styles.description}>{item.description}</Text>
 
-      <View style={{ marginTop: 36 }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
         <TouchableOpacity onPress={handleNext}>
           <ArrowRight width={50} height={30} />
         </TouchableOpacity>
@@ -56,7 +65,6 @@ const styles = StyleSheet.create({
   },
   image: {
     justifyContent: "center",
-    marginTop: 16,
   },
   title: {
     fontFamily: Fonts.QUICKSAND_BOLD,

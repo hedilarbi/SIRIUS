@@ -19,7 +19,7 @@ const KitNameSlide = ({ width, slideAnimValue, handleNext, setName, name }) => {
       style={{
         alignItems: "center",
         width,
-        paddingHorizontal: 24,
+        paddingHorizontal: 12,
         paddingVertical: 12,
         transform: [{ translateX: slideAnimValue }],
       }}
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   btn_text: {
-    fontFamily: Fonts.QUICKSAND_SEMI_BOLD,
-    fontSize: FontSize.M,
+    fontFamily: Fonts.QUICKSAND_MEDIUM,
+    fontSize: FontSize.S,
     color: "white",
     marginRight: 12,
     marginTop: -4,
